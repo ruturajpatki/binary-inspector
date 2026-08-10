@@ -1,5 +1,10 @@
 # Binary Inspector
 
+![Build](https://img.shields.io/badge/Build-Passing-green?style=for-the-badge)
+![Framework](https://img.shields.io/badge/Framework-Flutter%20Dart-blue?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Windows-yellowgreen?style=for-the-badge)
+![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey?style=for-the-badge)
+
 A lightweight, developer-friendly **PE and ELF binary inspection toolkit** written in pure Dart.
 
 Binary Inspector consists of two parts:
