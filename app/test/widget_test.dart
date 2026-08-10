@@ -1,0 +1,42 @@
+/*
+ * Project: Binary Inspector
+ * Author: Ruturaj V Patki
+ * Email: ruturajvpatki@zohomail.com
+ *
+ * Copyright 2026 Ruturaj V Patki
+ * Originally authored by Ruturaj V Patki.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:app/main.dart';
+
+void main() {
+  testWidgets('App starts with a beautiful empty state', (WidgetTester tester) async {
+    // Configure desktop-like window size for the test
+    tester.view.physicalSize = const Size(1280, 720);
+    tester.view.devicePixelRatio = 1.0;
+
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const BinaryInspectorApp());
+
+    // Verify empty state is displayed
+    expect(find.text('Inspect Executable Binary'), findsOneWidget);
+    expect(find.text('Browse Files'), findsOneWidget);
+    
+    // Verify there is an "Open File" button in the header bar
+    expect(find.text('Open File'), findsOneWidget);
+  });
+}
