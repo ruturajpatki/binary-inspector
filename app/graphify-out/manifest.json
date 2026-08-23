@@ -1,0 +1,62 @@
+{
+  "lib/app_theme.dart": {
+    "mtime": 1786345913.1157143,
+    "ast_hash": "a6623340c258132fca6e23181a1c6a21",
+    "semantic_hash": "a6623340c258132fca6e23181a1c6a21"
+  },
+  "lib/details_view.dart": {
+    "mtime": 1786345913.1157143,
+    "ast_hash": "b02d094bb01b1a35f830b2d9a4b03c93",
+    "semantic_hash": "b02d094bb01b1a35f830b2d9a4b03c93"
+  },
+  "lib/main.dart": {
+    "mtime": 1786345913.1157143,
+    "ast_hash": "73fa5e7820a65710ff594c6dc5e1574c",
+    "semantic_hash": "73fa5e7820a65710ff594c6dc5e1574c"
+  },
+  "test/widget_test.dart": {
+    "mtime": 1786345913.1157143,
+    "ast_hash": "dac582833269c57fdc05974a87f1a1ed",
+    "semantic_hash": "dac582833269c57fdc05974a87f1a1ed"
+  },
+  "windows/runner/flutter_window.cpp": {
+    "mtime": 1786347083.1528869,
+    "ast_hash": "2f463f9b7da67a2d692a012f9ea85e0c",
+    "semantic_hash": "2f463f9b7da67a2d692a012f9ea85e0c"
+  },
+  "windows/runner/flutter_window.h": {
+    "mtime": 1786347083.1528869,
+    "ast_hash": "7defcc89d4a26d56e801241d624d48fb",
+    "semantic_hash": "7defcc89d4a26d56e801241d624d48fb"
+  },
+  "windows/runner/main.cpp": {
+    "mtime": 1786345913.13142,
+    "ast_hash": "453c1c898b6bd17c5c0b8b1b52816bb8",
+    "semantic_hash": "453c1c898b6bd17c5c0b8b1b52816bb8"
+  },
+  "windows/runner/resource.h": {
+    "mtime": 1786347083.1528869,
+    "ast_hash": "1ade5dd15e613479a15e8832ed276f2b",
+    "semantic_hash": "1ade5dd15e613479a15e8832ed276f2b"
+  },
+  "windows/runner/utils.cpp": {
+    "mtime": 1786347083.1528869,
+    "ast_hash": "e18900a4c2c2962ad732d3b83f0396b9",
+    "semantic_hash": "e18900a4c2c2962ad732d3b83f0396b9"
+  },
+  "windows/runner/utils.h": {
+    "mtime": 1786347083.1528869,
+    "ast_hash": "fd81e143f5614eb6fd75efe539002853",
+    "semantic_hash": "fd81e143f5614eb6fd75efe539002853"
+  },
+  "windows/runner/win32_window.cpp": {
+    "mtime": 1786347083.1505675,
+    "ast_hash": "571eb8234dbc2661be03aa5f2a4d2fca",
+    "semantic_hash": "571eb8234dbc2661be03aa5f2a4d2fca"
+  },
+  "windows/runner/win32_window.h": {
+    "mtime": 1786347083.1505675,
+    "ast_hash": "7569387d58711ab975940f4df3b4bcda",
+    "semantic_hash": "7569387d58711ab975940f4df3b4bcda"
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "communities": {
+    "0": [
+      "dart_io",
+      "details_view_dart",
+      "lib_main",
+      "lib_main_binaryinspectorapp",
+      "lib_main_build",
+      "lib_main_buildaboutlink",
+      "lib_main_builddragoverlay",
+      "lib_main_buildemptystate",
+      "lib_main_builderrorstate",
+      "lib_main_buildheaderbar",
+      "lib_main_buildnavheader",
+      "lib_main_buildnavigationtree",
+      "lib_main_buildnavtile",
+      "lib_main_buildsidebaroverviewheader",
+      "lib_main_buildworkspace",
+      "lib_main_clearfile",
+      "lib_main_createstate",
+      "lib_main_error",
+      "lib_main_isdragging",
+      "lib_main_launchurl",
+      "lib_main_loadfile",
+      "lib_main_main",
+      "lib_main_openfile",
+      "lib_main_result",
+      "lib_main_selectednode",
+      "lib_main_showaboutdialog",
+      "lib_main_sidebarwidth",
+      "package_desktop_drop_desktop_drop_dart",
+      "package_file_picker_file_picker_dart",
+      "statelesswidget"
+    ],
+    "1": [
+      "app_theme_dart",
+      "binaryresult",
+      "lib_details_view",
+      "lib_details_view_build",
+      "lib_details_view_buildcard",
+      "lib_details_view_builddosheader",
+      "lib_details_view_buildelfheader",
+      "lib_details_view_buildelfprogramheaders",
+      "lib_details_view_buildexportssymbols",
+      "lib_details_view_buildfileinfo",
+      "lib_details_view_buildimports",
+      "lib_details_view_buildntheaders",
+      "lib_details_view_buildoptionalheader",
+      "lib_details_view_buildrow",
+      "lib_details_view_buildsearchfield",
+      "lib_details_view_buildsections",
+      "lib_details_view_buildsectiontitle",
+      "lib_details_view_createstate",
+      "lib_details_view_didupdatewidget",
+      "lib_details_view_dispose",
+      "lib_details_view_hex",
+      "lib_details_view_result",
+      "lib_details_view_searchcontroller",
+      "lib_details_view_searchquery",
+      "lib_details_view_selectednode",
+      "package_binary_inspector_sdk_binary_inspector_sdk_dart",
+      "texteditingcontroller"
+    ],
+    "2": [
+      "rect",
+      "windows_runner_flutter_window_flutterwindow_oncreate",
+      "windows_runner_win32_window_cpp_hwnd",
+      "windows_runner_win32_window_cpp_lparam",
+      "windows_runner_win32_window_cpp_lresult",
+      "windows_runner_win32_window_cpp_uint",
+      "windows_runner_win32_window_cpp_wparam",
+      "windows_runner_win32_window_enablefulldpisupportifavailable",
+      "windows_runner_win32_window_h_hwnd",
+      "windows_runner_win32_window_win32window",
+      "windows_runner_win32_window_win32window_child_content",
+      "windows_runner_win32_window_win32window_getclientarea",
+      "windows_runner_win32_window_win32window_gethandle",
+      "windows_runner_win32_window_win32window_getthisfromhandle",
+      "windows_runner_win32_window_win32window_messagehandler",
+      "windows_runner_win32_window_win32window_oncreate",
+      "windows_runner_win32_window_win32window_quit_on_close",
+      "windows_runner_win32_window_win32window_setchildcontent",
+      "windows_runner_win32_window_win32window_setquitonclose",
+      "windows_runner_win32_window_win32window_show",
+      "windows_runner_win32_window_win32window_window_handle",
+      "windows_runner_win32_window_win32window_wndproc"
+    ],
+    "3": [
+      "flutterviewcontroller",
+      "unique_ptr",
+      "windows_runner_flutter_window_cpp_dartproject",
+      "windows_runner_flutter_window_cpp_hwnd",
+      "windows_runner_flutter_window_cpp_lparam",
+      "windows_runner_flutter_window_cpp_lresult",
+      "windows_runner_flutter_window_cpp_uint",
+      "windows_runner_flutter_window_cpp_windows_runner_flutter_window",
+      "windows_runner_flutter_window_cpp_wparam",
+      "windows_runner_flutter_window_flutterwindow",
+      "windows_runner_flutter_window_flutterwindow_flutter_controller",
+      "windows_runner_flutter_window_flutterwindow_flutterwindow",
+      "windows_runner_flutter_window_flutterwindow_messagehandler",
+      "windows_runner_flutter_window_flutterwindow_ondestroy",
+      "windows_runner_flutter_window_flutterwindow_project",
+      "windows_runner_flutter_window_h_dartproject",
+      "windows_runner_flutter_window_h_windows_runner_flutter_window",
+      "windows_runner_win32_window_h_windows_runner_win32_window",
+      "windows_runner_win32_window_win32window_ondestroy"
+    ],
+    "4": [
+      "lib_app_theme",
+      "lib_app_theme_accent",
+      "lib_app_theme_apptheme",
+      "lib_app_theme_background",
+      "lib_app_theme_cardbg",
+      "lib_app_theme_dividercolor",
+      "lib_app_theme_error",
+      "lib_app_theme_primary",
+      "lib_app_theme_sidebarbackground",
+      "lib_app_theme_surface",
+      "lib_app_theme_textprimary",
+      "lib_app_theme_textsecondary",
+      "package_app_main_dart",
+      "package_flutter_material_dart",
+      "package_flutter_test_flutter_test_dart",
+      "static_const_color",
+      "test_widget_test",
+      "test_widget_test_main"
+    ],
+    "5": [
+      "point",
+      "size",
+      "windows_runner_resource",
+      "windows_runner_win32_window_cpp_wchar_t",
+      "windows_runner_win32_window_cpp_windows_runner_win32_window",
+      "windows_runner_win32_window_scale",
+      "windows_runner_win32_window_win32window_create",
+      "windows_runner_win32_window_win32window_destroy",
+      "windows_runner_win32_window_win32window_updatetheme",
+      "windows_runner_win32_window_win32window_win32window",
+      "windows_runner_win32_window_windowclassregistrar",
+      "windows_runner_win32_window_windowclassregistrar_class_registered",
+      "windows_runner_win32_window_windowclassregistrar_getinstance",
+      "windows_runner_win32_window_windowclassregistrar_getwindowclass",
+      "windows_runner_win32_window_windowclassregistrar_instance",
+      "windows_runner_win32_window_windowclassregistrar_unregisterwindowclass",
+      "windows_runner_win32_window_windowclassregistrar_windowclassregistrar",
+      "wstring"
+    ],
+    "6": [
+      "in",
+      "in_opt",
+      "vector",
+      "windows_runner_main",
+      "windows_runner_main_wwinmain",
+      "windows_runner_utils_cpp_string",
+      "windows_runner_utils_cpp_wchar_t",
+      "windows_runner_utils_cpp_windows_runner_utils",
+      "windows_runner_utils_createandattachconsole",
+      "windows_runner_utils_getcommandlinearguments",
+      "windows_runner_utils_h_windows_runner_utils",
+      "windows_runner_utils_utf8fromutf16"
+    ],
+    "7": [
+      "lib_details_view_detailsview",
+      "lib_details_view_detailsviewstate",
+      "lib_main_mainlayout",
+      "lib_main_mainlayoutstate",
+      "state",
+      "statefulwidget"
+    ],
+    "8": [
+      "annotation_ruturajpatki"
+    ],
+    "9": [
+      "none_string"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06666666666666667,
+    "1": 0.07407407407407407,
+    "2": 0.15584415584415584,
+    "3": 0.11695906432748537,
+    "4": 0.1111111111111111,
+    "5": 0.17647058823529413,
+    "6": 0.24242424242424243,
+    "7": 0.4,
+    "8": 1.0,
+    "9": 1.0
+  },
+  "gods": [
+    {
+      "id": "windows_runner_win32_window_win32window",
+      "label": "Win32Window",
+      "degree": 19
+    },
+    {
+      "id": "windows_runner_win32_window_win32window_messagehandler",
+      "label": "MessageHandler",
+      "degree": 12
+    },
+    {
+      "id": "windows_runner_flutter_window_flutterwindow",
+      "label": "FlutterWindow",
+      "degree": 10
+    },
+    {
+      "id": "windows_runner_win32_window_win32window_wndproc",
+      "label": "WndProc",
+      "degree": 10
+    },
+    {
+      "id": "windows_runner_win32_window_win32window_create",
+      "label": "Create",
+      "degree": 10
+    },
+    {
+      "id": "windows_runner_flutter_window_flutterwindow_messagehandler",
+      "label": "MessageHandler",
+      "degree": 8
+    },
+    {
+      "id": "windows_runner_win32_window_windowclassregistrar",
+      "label": "WindowClassRegistrar",
+      "degree": 7
+    },
+    {
+      "id": "windows_runner_win32_window_win32window_destroy",
+      "label": "Destroy",
+      "degree": 7
+    },
+    {
+      "id": "windows_runner_win32_window_win32window_getclientarea",
+      "label": "GetClientArea",
+      "degree": 6
+    },
+    {
+      "id": "windows_runner_main_wwinmain",
+      "label": "wWinMain()",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Win32Window::Win32Window()",
+      "target": "Destroy",
+      "source_files": [
+        "windows/runner/win32_window.cpp",
+        "windows/runner/win32_window.h"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `Win32Window::Win32Window()` unexpectedly reaches hub `Destroy`"
+    },
+    {
+      "source": "wWinMain()",
+      "target": "CreateAndAttachConsole()",
+      "source_files": [
+        "windows/runner/main.cpp",
+        "windows/runner/utils.cpp"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `CreateAndAttachConsole()` unexpectedly reaches hub `wWinMain()`"
+    },
+    {
+      "source": "FlutterWindow",
+      "target": "Win32Window",
+      "source_files": [
+        "windows/runner/flutter_window.h",
+        "windows/runner/win32_window.h"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Create",
+      "target": "Scale()",
+      "source_files": [
+        "windows/runner/win32_window.h",
+        "windows/runner/win32_window.cpp"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `Scale()` unexpectedly reaches hub `Create`"
+    },
+    {
+      "source": "wWinMain()",
+      "target": "GetCommandLineArguments()",
+      "source_files": [
+        "windows/runner/main.cpp",
+        "windows/runner/utils.cpp"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
