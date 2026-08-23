@@ -1,6 +1,7 @@
 name: Bootstrap Desktop Platforms
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -10,7 +11,7 @@ permissions:
 
 jobs:
   bootstrap:
-    name: Add missing Linux and macOS platforms
+    name: Add Linux and macOS desktop platforms
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -52,6 +53,8 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git reset --soft origin/main
           git add app/linux app/macos
           git commit -m "Add Linux and macOS desktop platforms"
           git push origin HEAD:main
