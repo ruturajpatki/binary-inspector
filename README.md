@@ -1,8 +1,8 @@
 # Binary Inspector
 
-![Build](https://img.shields.io/badge/Build-Passing-green?style=for-the-badge)
+![Release](https://img.shields.io/badge/Release-Download%20Ready-green?style=for-the-badge)
 ![Framework](https://img.shields.io/badge/Framework-Flutter%20Dart-blue?style=for-the-badge)
-![Platform](https://img.shields.io/badge/Platform-Windows-yellowgreen?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%E2%80%A2%20Linux%20%E2%80%A2%20MacOS-yellowgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey?style=for-the-badge)
 
 A lightweight, developer-friendly **PE and ELF binary inspection toolkit** written in pure Dart.
@@ -14,9 +14,13 @@ Binary Inspector consists of two parts:
 
 The SDK lets developers inspect executable structure without implementing PE/ELF parsing themselves, while the desktop application provides a convenient visual way to explore binaries.
 
----
-
 [screenshot here]
+
+---
+### Download the latest build from [Releases](https://github.com/ruturajpatki/binary-inspector/releases) page.
+
+> [!TIP]
+> **Windows SmartScreen Warning:** Windows may display a Microsoft Defender SmartScreen warning because this open-source application is not digitally signed. Verify that you downloaded it from the official GitHub repository, then select More info → Run anyway.
 
 ---
 
