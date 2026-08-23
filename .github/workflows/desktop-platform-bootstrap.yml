@@ -1,0 +1,60 @@
+name: Bootstrap Desktop Platforms
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    name: Add Linux and macOS desktop platforms
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check whether platforms are already present
+        id: platforms
+        shell: bash
+        run: |
+          if [[ -d app/linux && -d app/macos ]]; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Flutter
+        if: steps.platforms.outputs.needed == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.7
+          cache: true
+
+      - name: Generate missing desktop platform files
+        if: steps.platforms.outputs.needed == 'true'
+        working-directory: app
+        run: flutter create --platforms=linux,macos .
+
+      - name: Commit generated platform files
+        if: steps.platforms.outputs.needed == 'true'
+        shell: bash
+        run: |
+          if [[ -z "$(git status --porcelain -- app/linux app/macos)" ]]; then
+            echo "No new Linux/macOS files were generated."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git reset --soft origin/main
+          git add app/linux app/macos
+          git commit -m "Add Linux and macOS desktop platforms"
+          git push origin HEAD:main
