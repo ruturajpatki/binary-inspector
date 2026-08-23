@@ -24,44 +24,33 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
-
       - name: Validate release version
         shell: pwsh
         run: |
           $pubspec = Get-Content "$env:APP_DIR/pubspec.yaml" -Raw
-          if ($pubspec -notmatch '(?m)^version:\s*([^+\s]+)') {
-            throw 'Could not read version from app/pubspec.yaml'
-          }
+          if ($pubspec -notmatch '(?m)^version:\s*([^+\s]+)') { throw 'Could not read version from app/pubspec.yaml' }
           $appVersion = $Matches[1]
           $tagVersion = $env:RELEASE_TAG.TrimStart('v')
-          if ($appVersion -ne $tagVersion) {
-            throw "Release tag $env:RELEASE_TAG does not match app version $appVersion"
-          }
-
+          if ($appVersion -ne $tagVersion) { throw "Release tag $env:RELEASE_TAG does not match app version $appVersion" }
       - name: Enable Windows desktop
         run: flutter config --enable-windows-desktop
-
       - name: Get dependencies
         working-directory: ${{ env.APP_DIR }}
         run: flutter pub get
-
       - name: Build Windows
         working-directory: ${{ env.APP_DIR }}
         run: flutter build windows --release
-
       - name: Package Windows build
         shell: pwsh
         run: |
           $source = "$env:APP_DIR/build/windows/x64/runner/Release"
           $destination = "binary-inspector-windows-$env:RELEASE_TAG.zip"
           Compress-Archive -Path "$source/*" -DestinationPath $destination -CompressionLevel Optimal
-
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
@@ -76,45 +65,34 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
-
       - name: Validate release version
         shell: bash
         run: |
           APP_VERSION=$(sed -nE 's/^version:[[:space:]]*([^+[:space:]]+).*/\1/p' "$APP_DIR/pubspec.yaml")
           TAG_VERSION="${RELEASE_TAG#v}"
           test -n "$APP_VERSION" || { echo "Could not read app version"; exit 1; }
-          test "$APP_VERSION" = "$TAG_VERSION" || {
-            echo "Release tag $RELEASE_TAG does not match app version $APP_VERSION"
-            exit 1
-          }
-
+          test "$APP_VERSION" = "$TAG_VERSION" || { echo "Release tag $RELEASE_TAG does not match app version $APP_VERSION"; exit 1; }
       - name: Install Linux build dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
-
       - name: Enable Linux desktop
         run: flutter config --enable-linux-desktop
-
       - name: Get dependencies
         working-directory: ${{ env.APP_DIR }}
         run: flutter pub get
-
       - name: Build Linux
         working-directory: ${{ env.APP_DIR }}
         run: flutter build linux --release
-
       - name: Package Linux build
         run: |
           cd "$APP_DIR/build/linux/x64/release/bundle"
           zip -r "$GITHUB_WORKSPACE/binary-inspector-linux-$RELEASE_TAG.zip" .
-
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
@@ -129,40 +107,43 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
-
       - name: Validate release version
         shell: bash
         run: |
           APP_VERSION=$(sed -nE 's/^version:[[:space:]]*([^+[:space:]]+).*/\1/p' "$APP_DIR/pubspec.yaml")
           TAG_VERSION="${RELEASE_TAG#v}"
           test -n "$APP_VERSION" || { echo "Could not read app version"; exit 1; }
-          test "$APP_VERSION" = "$TAG_VERSION" || {
-            echo "Release tag $RELEASE_TAG does not match app version $APP_VERSION"
-            exit 1
-          }
-
+          test "$APP_VERSION" = "$TAG_VERSION" || { echo "Release tag $RELEASE_TAG does not match app version $APP_VERSION"; exit 1; }
       - name: Enable macOS desktop
         run: flutter config --enable-macos-desktop
-
       - name: Get dependencies
         working-directory: ${{ env.APP_DIR }}
         run: flutter pub get
-
       - name: Build macOS
         working-directory: ${{ env.APP_DIR }}
         run: flutter build macos --release
-
-      - name: Package macOS build
+      - name: Locate macOS application bundle
+        id: macos_app
+        shell: bash
         run: |
-          cd "$APP_DIR/build/macos/Build/Products/Release"
-          zip -r "$GITHUB_WORKSPACE/binary-inspector-macos-$RELEASE_TAG.zip" "*.app"
-
+          APP_PATH=$(find "$APP_DIR/build/macos" -type d -name '*.app' -print -quit)
+          if [[ -z "$APP_PATH" ]]; then
+            echo "No macOS .app bundle was produced. Build output:"
+            find "$APP_DIR/build/macos" -maxdepth 6 -print 2>/dev/null || true
+            exit 1
+          fi
+          echo "Found macOS application: $APP_PATH"
+          echo "path=$APP_PATH" >> "$GITHUB_OUTPUT"
+      - name: Package macOS build
+        shell: bash
+        run: |
+          APP_PATH="${{ steps.macos_app.outputs.path }}"
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$GITHUB_WORKSPACE/binary-inspector-macos-$RELEASE_TAG.zip"
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
@@ -184,7 +165,6 @@ jobs:
         with:
           path: release-assets
           merge-multiple: true
-
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
