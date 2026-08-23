@@ -1,0 +1,195 @@
+name: Desktop Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop-release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  APP_DIR: app
+  APP_NAME: binary_inspector
+  RELEASE_TAG: ${{ github.ref_name }}
+
+jobs:
+  windows:
+    name: Windows build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Validate release version
+        shell: pwsh
+        run: |
+          $pubspec = Get-Content "$env:APP_DIR/pubspec.yaml" -Raw
+          if ($pubspec -notmatch '(?m)^version:\s*([^+\s]+)') {
+            throw 'Could not read version from app/pubspec.yaml'
+          }
+          $appVersion = $Matches[1]
+          $tagVersion = $env:RELEASE_TAG.TrimStart('v')
+          if ($appVersion -ne $tagVersion) {
+            throw "Release tag $env:RELEASE_TAG does not match app version $appVersion"
+          }
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Get dependencies
+        working-directory: ${{ env.APP_DIR }}
+        run: flutter pub get
+
+      - name: Build Windows
+        working-directory: ${{ env.APP_DIR }}
+        run: flutter build windows --release
+
+      - name: Package Windows build
+        shell: pwsh
+        run: |
+          $source = "$env:APP_DIR/build/windows/x64/runner/Release"
+          $destination = "binary-inspector-windows-$env:RELEASE_TAG.zip"
+          Compress-Archive -Path "$source/*" -DestinationPath $destination -CompressionLevel Optimal
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-inspector-windows
+          path: binary-inspector-windows-${{ env.RELEASE_TAG }}.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  linux:
+    name: Linux build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Validate release version
+        shell: bash
+        run: |
+          APP_VERSION=$(sed -nE 's/^version:[[:space:]]*([^+[:space:]]+).*/\1/p' "$APP_DIR/pubspec.yaml")
+          TAG_VERSION="${RELEASE_TAG#v}"
+          test -n "$APP_VERSION" || { echo "Could not read app version"; exit 1; }
+          test "$APP_VERSION" = "$TAG_VERSION" || {
+            echo "Release tag $RELEASE_TAG does not match app version $APP_VERSION"
+            exit 1
+          }
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+
+      - name: Enable Linux desktop
+        run: flutter config --enable-linux-desktop
+
+      - name: Get dependencies
+        working-directory: ${{ env.APP_DIR }}
+        run: flutter pub get
+
+      - name: Build Linux
+        working-directory: ${{ env.APP_DIR }}
+        run: flutter build linux --release
+
+      - name: Package Linux build
+        run: |
+          cd "$APP_DIR/build/linux/x64/release/bundle"
+          zip -r "$GITHUB_WORKSPACE/binary-inspector-linux-$RELEASE_TAG.zip" .
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-inspector-linux
+          path: binary-inspector-linux-${{ env.RELEASE_TAG }}.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  macos:
+    name: macOS build
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Validate release version
+        shell: bash
+        run: |
+          APP_VERSION=$(sed -nE 's/^version:[[:space:]]*([^+[:space:]]+).*/\1/p' "$APP_DIR/pubspec.yaml")
+          TAG_VERSION="${RELEASE_TAG#v}"
+          test -n "$APP_VERSION" || { echo "Could not read app version"; exit 1; }
+          test "$APP_VERSION" = "$TAG_VERSION" || {
+            echo "Release tag $RELEASE_TAG does not match app version $APP_VERSION"
+            exit 1
+          }
+
+      - name: Enable macOS desktop
+        run: flutter config --enable-macos-desktop
+
+      - name: Get dependencies
+        working-directory: ${{ env.APP_DIR }}
+        run: flutter pub get
+
+      - name: Build macOS
+        working-directory: ${{ env.APP_DIR }}
+        run: flutter build macos --release
+
+      - name: Package macOS build
+        run: |
+          cd "$APP_DIR/build/macos/Build/Products/Release"
+          zip -r "$GITHUB_WORKSPACE/binary-inspector-macos-$RELEASE_TAG.zip" "*.app"
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-inspector-macos
+          path: binary-inspector-macos-${{ env.RELEASE_TAG }}.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    name: Create GitHub Release
+    needs:
+      - windows
+      - linux
+      - macos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v5
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$RELEASE_TAG" release-assets/*.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Binary Inspector $RELEASE_TAG" \
+            --generate-notes
