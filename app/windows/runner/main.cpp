@@ -46,17 +46,46 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
   FlutterWindow window(project);
-  int screen_width = GetSystemMetrics(SM_CXSCREEN);
-  int screen_height = GetSystemMetrics(SM_CYSCREEN);
-  int width = 1280;
-  int height = 720;
-  int x = (screen_width - width) / 2;
-  int y = (screen_height - height) / 2;
-  Win32Window::Point origin(x, y);
-  Win32Window::Size size(width, height);
+  Win32Window::Point origin(10, 10);
+  Win32Window::Size size(1280, 720);
   if (!window.Create(L"Binary Inspector", origin, size)) {
     return EXIT_FAILURE;
   }
+
+  // Center the window on the active screen's work area (excluding taskbar)
+  HWND hwnd = window.GetHandle();
+  if (hwnd) {
+    HMONITOR target_monitor = nullptr;
+    POINT cursor_pos;
+    if (::GetCursorPos(&cursor_pos)) {
+      target_monitor = ::MonitorFromPoint(cursor_pos, MONITOR_DEFAULTTONEAREST);
+    } else {
+      target_monitor = ::MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+    }
+
+    MONITORINFO monitor_info = {};
+    monitor_info.cbSize = sizeof(MONITORINFO);
+    if (::GetMonitorInfo(target_monitor, &monitor_info)) {
+      RECT window_rect = {};
+      ::GetWindowRect(hwnd, &window_rect);
+      int window_width = window_rect.right - window_rect.left;
+      int window_height = window_rect.bottom - window_rect.top;
+      int work_width = monitor_info.rcWork.right - monitor_info.rcWork.left;
+      int work_height = monitor_info.rcWork.bottom - monitor_info.rcWork.top;
+
+      int new_width = (window_width > work_width) ? work_width : window_width;
+      int new_height = (window_height > work_height) ? work_height : window_height;
+      int x = monitor_info.rcWork.left + (work_width - new_width) / 2;
+      int y = monitor_info.rcWork.top + (work_height - new_height) / 2;
+
+      UINT flags = SWP_NOZORDER | SWP_NOACTIVATE;
+      if (new_width == window_width && new_height == window_height) {
+        flags |= SWP_NOSIZE;
+      }
+      ::SetWindowPos(hwnd, nullptr, x, y, new_width, new_height, flags);
+    }
+  }
+
   window.SetQuitOnClose(true);
 
   ::MSG msg;

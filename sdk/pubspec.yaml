@@ -1,6 +1,6 @@
 name: binary_inspector_sdk
 description: A clean, programmatic PE and ELF inspection SDK in pure Dart.
-version: 1.0.0
+version: 1.11.0
 
 environment:
   sdk: ^3.12.2

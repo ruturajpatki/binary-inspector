@@ -470,11 +470,10 @@ class _MainLayoutState extends State<MainLayout> {
     final isSelected = _selectedNode == nodeId;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
+      child: Material(
         color: isSelected ? AppTheme.primary.withOpacity(0.08) : Colors.transparent,
         borderRadius: BorderRadius.circular(4),
-      ),
-      child: ListTile(
+        child: ListTile(
         dense: true,
         horizontalTitleGap: 8,
         leading: Icon(
@@ -496,7 +495,8 @@ class _MainLayoutState extends State<MainLayout> {
           });
         },
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildDragOverlay() {
@@ -582,7 +582,7 @@ class _MainLayoutState extends State<MainLayout> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'version 1.10',
+                  'version 1.11',
                   style: TextStyle(
                     fontSize: 13,
                     color: AppTheme.primary.withOpacity(0.8),

@@ -21,7 +21,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:binary_inspector_sdk/binary_inspector_sdk.dart';
 import 'package:app/main.dart';
+import 'package:app/details_view.dart';
 
 void main() {
   testWidgets('App starts with a beautiful empty state', (WidgetTester tester) async {
@@ -38,5 +40,68 @@ void main() {
     
     // Verify there is an "Open File" button in the header bar
     expect(find.text('Open File'), findsOneWidget);
+  });
+
+  testWidgets('Exports table scrollbar is present, interactive, and scrollable without error', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1280, 720);
+    tester.view.devicePixelRatio = 1.0;
+
+    final mockSymbols = List.generate(
+      100,
+      (i) => BinarySymbol(
+        name: 'ExportFunction_$i',
+        address: 0x140001000 + i * 16,
+        size: 32,
+        type: 'Function',
+        binding: 'Global',
+      ),
+    );
+
+    final mockResult = BinaryResult(
+      overview: const BinaryOverview(
+        fileName: 'test.dll',
+        fileSize: 102400,
+        format: BinaryFormat.pe,
+        formatIdentifier: 'PE32+',
+        architecture: BinaryArchitecture.x64,
+        bitness: BinaryBitness.b64,
+        endianness: BinaryEndianness.little,
+        fileType: BinaryFileType.sharedLibrary,
+        entryPoint: 0x140001000,
+      ),
+      sections: const [],
+      dependencies: const [],
+      symbols: mockSymbols,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: DetailsView(
+            result: mockResult,
+            selectedNode: 'exports',
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify Exports Table header is displayed
+    expect(find.text('Exports Table'), findsOneWidget);
+    expect(find.text('Total entry count: 100'), findsOneWidget);
+
+    // Verify first row is visible
+    expect(find.text('ExportFunction_0'), findsOneWidget);
+
+    // Verify Scrollbars are present
+    expect(find.byType(Scrollbar), findsAtLeastNWidgets(2));
+
+    // Scroll down using drag
+    await tester.drag(find.text('ExportFunction_0'), const Offset(0, -500));
+    await tester.pumpAndSettle();
+
+    // Verify that scrolling occurred without throwing scroll position exception
+    expect(tester.takeException(), isNull);
   });
 }

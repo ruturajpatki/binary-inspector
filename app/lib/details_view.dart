@@ -40,6 +40,9 @@ class DetailsView extends StatefulWidget {
 class _DetailsViewState extends State<DetailsView> {
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _exportsVerticalController = ScrollController();
+  final ScrollController _exportsHorizontalController = ScrollController();
+  final ScrollController _dataDirectoriesHorizontalController = ScrollController();
 
   @override
   void didUpdateWidget(covariant DetailsView oldWidget) {
@@ -47,12 +50,21 @@ class _DetailsViewState extends State<DetailsView> {
     if (oldWidget.selectedNode != widget.selectedNode) {
       _searchController.clear();
       _searchQuery = '';
+      if (_exportsVerticalController.hasClients) {
+        _exportsVerticalController.jumpTo(0);
+      }
+      if (_exportsHorizontalController.hasClients) {
+        _exportsHorizontalController.jumpTo(0);
+      }
     }
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _exportsVerticalController.dispose();
+    _exportsHorizontalController.dispose();
+    _dataDirectoriesHorizontalController.dispose();
     super.dispose();
   }
 
@@ -354,34 +366,55 @@ class _DetailsViewState extends State<DetailsView> {
             child: filteredSymbols.isEmpty
                 ? const Center(child: Text('No symbols found.'))
                 : Scrollbar(
+                    controller: _exportsVerticalController,
+                    thumbVisibility: true,
+                    trackVisibility: true,
                     interactive: true,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columns: const [
-                            DataColumn(label: Text('Name')),
-                            DataColumn(label: Text('Address')),
-                            DataColumn(label: Text('Size')),
-                            DataColumn(label: Text('Type')),
-                            DataColumn(label: Text('Binding')),
-                          ],
-                          rows: filteredSymbols.map((sym) {
-                            return DataRow(cells: [
-                              DataCell(
-                                SelectableText(
-                                  sym.name,
-                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                    scrollbarOrientation: ScrollbarOrientation.right,
+                    child: Scrollbar(
+                      controller: _exportsHorizontalController,
+                      thumbVisibility: true,
+                      trackVisibility: true,
+                      interactive: true,
+                      scrollbarOrientation: ScrollbarOrientation.bottom,
+                      notificationPredicate: (notification) => notification.depth == 1,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return SingleChildScrollView(
+                            controller: _exportsVerticalController,
+                            scrollDirection: Axis.vertical,
+                            child: SingleChildScrollView(
+                              controller: _exportsHorizontalController,
+                              scrollDirection: Axis.horizontal,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                                child: DataTable(
+                                  columns: const [
+                                    DataColumn(label: Text('Name')),
+                                    DataColumn(label: Text('Address')),
+                                    DataColumn(label: Text('Size')),
+                                    DataColumn(label: Text('Type')),
+                                    DataColumn(label: Text('Binding')),
+                                  ],
+                                  rows: filteredSymbols.map((sym) {
+                                    return DataRow(cells: [
+                                      DataCell(
+                                        SelectableText(
+                                          sym.name,
+                                          style: const TextStyle(fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                      DataCell(SelectableText(_hex(sym.address), style: AppTheme.monoStyle)),
+                                      DataCell(Text(sym.size.toString())),
+                                      DataCell(Text(sym.type)),
+                                      DataCell(Text(sym.binding)),
+                                    ]);
+                                  }).toList(),
                                 ),
                               ),
-                              DataCell(SelectableText(_hex(sym.address), style: AppTheme.monoStyle)),
-                              DataCell(Text(sym.size.toString())),
-                              DataCell(Text(sym.type)),
-                              DataCell(Text(sym.binding)),
-                            ]);
-                          }).toList(),
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -407,6 +440,9 @@ class _DetailsViewState extends State<DetailsView> {
                     _searchController.clear();
                     _searchQuery = '';
                   });
+                  if (_exportsVerticalController.hasClients) {
+                    _exportsVerticalController.jumpTo(0);
+                  }
                 },
               )
             : null,
@@ -425,6 +461,9 @@ class _DetailsViewState extends State<DetailsView> {
         setState(() {
           _searchQuery = val;
         });
+        if (_exportsVerticalController.hasClients) {
+          _exportsVerticalController.jumpTo(0);
+        }
       },
     );
   }
@@ -531,7 +570,12 @@ class _DetailsViewState extends State<DetailsView> {
             title: 'Data Directories Table',
             children: [
               Scrollbar(
+                controller: _dataDirectoriesHorizontalController,
+                thumbVisibility: true,
+                interactive: true,
+                scrollbarOrientation: ScrollbarOrientation.bottom,
                 child: SingleChildScrollView(
+                  controller: _dataDirectoriesHorizontalController,
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
                     columns: const [
